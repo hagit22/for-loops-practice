@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תרגול לולאות / טעויות נפוצות</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        .slide {
+            padding: 40px 60px;
+            min-height: 100vh;
+            display: none;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block !important;
+        }
+
+        /* Logo removed for unified design */
+
+        /* Title Slide */
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 50%, #f97316 100%);
+            color: white;
+            display: none;
+        }
+
+        .title-slide.active {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* Content Slide - Unified Design */
+        .content-slide {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            padding: 30px 50px 100px 50px !important;
+        }
+
+        .content-slide h2 {
+            font-size: 2rem;
+            color: #f97316;
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Unified Content Grid */
+        .unified-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 0;
+        }
+
+        /* New layout for input/output/explanation row */
+        .io-explanation-row {
+            grid-column: 1 / -1;  
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .io-explanation-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Code Display - takes full width */
+        .code-section {
+            grid-column: 1 / -1;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(14, 165, 233, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .code-display {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 18px;
+            border-radius: 10px;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .code-keyword {
+            color: #c792ea;
+            font-weight: bold;
+        }
+
+        .code-type {
+            color: #82aaff;
+        }
+
+        .code-variable {
+            color: #f07178;
+        }
+
+        .code-number {
+            color: #f78c6c;
+        }
+
+        .code-string {
+            color: #c3e88d;
+        }
+
+        .code-comment {
+            color: #697098;
+            font-style: italic;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .input-section h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .io-content {
+            font-size: 1.1rem;
+            color: #0f172a;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 10px;
+            direction: ltr;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Output Section */
+        .output-section {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            position: relative;
+        }
+
+        .output-section h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .reveal-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .reveal-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .revealed-content {
+            display: none;
+        }
+
+        .revealed-content.show {
+            display: block;
+        }
+
+        .output-error {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border: 2px solid #ef4444;
+            color: #fee2e2 !important;
+            font-weight: bold;
+        }
+
+        /* Correctness Section */
+        .correctness-container {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .correctness-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+        }
+
+        .correctness-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .correctness-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .correctness-result {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.9rem;
+            font-weight: 700;
+            animation: slideIn 0.5s ease;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .correctness-result.show {
+            display: block;
+        }
+
+        .correctness-result.wrong {
+            color: #dc2626;
+        }
+
+        .correctness-result.correct {
+            color: #059669;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #0ea5e9;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Slide Number */
+        .slide-number {
+            position: fixed;
+            bottom: 20px;
+            right: 45px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        /* Copyright */
+        .copyright {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            font-size: 0.7rem;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 12px;
+            border-radius: 15px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px 80px 20px;
+            }
+
+            .content-slide {
+                padding: 35px 20px 80px 20px !important;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5rem;
+            }
+
+            .content-slide h2 {
+                font-size: 1.6rem;
+            }
+
+            .unified-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .code-section {
+                grid-column: 1;
+            }
+
+            .correctness-container {
+                grid-column: 1;
+            }
+
+            .code-display {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+
+            .slide-number {
+                visibility: hidden;
+            }
+
+            .copyright {
+                display: none !important;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-buttons,
+            button,
+            .slide-number,
+            .copyright {
+                display: none !important;
+            }
+
+            .slide {
+                display: block !important;
+                page-break-after: always;
+                page-break-inside: avoid;
+                min-height: 90vh;
+            }
+
+            .revealed-content,
+            .correctness-result {
+                display: block !important;
+            }
+        }
+
+        /* Explanation button that appears after output is revealed */
+        .explanation-btn {
+            background: rgba(139, 92, 246, 0.9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .explanation-btn.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .explanation-btn:hover {
+            background: rgba(99, 102, 241, 1);
+        }
+
+        /* Explanation content box */
+        .explanation-content {
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            display: none;
+            direction: rtl;
+            text-align: right;
+            color: #f8fafc;
+        }
+
+        .explanation-content.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .explanation-content strong {
+            color: #6366f1;
+            font-weight: 700;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Title Slide -->
+        <div class="slide active title-slide">
+            <h1>יסודות מדעי המחשב - שפת #C</h1>
+            <div class="subtitle">תרגול לולאות / טעויות נפוצות</div>
+            <div style="font-size: 1.6rem; margin-top: 20px; opacity: 0.7; color: #e0f2fe;">
+                חגית ידוב
+            </div>
+        </div>
+
+        <!-- Example Slide 1 - No total declaration pitfall -->
+        <div class="slide content-slide">
+            <h2>חישוב סכום מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+Console.WriteLine(total);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(1)" id="output-btn-1">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-1">
+                        <div class="io-content output-error">
+                            Error!
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(1)" id="explanation-btn-1">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-1">
+                        המשתנה total לא הוגדר כלל. כדי להשתמש במשתנה, צריך תחילה להגדיר אותו.                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(1)" id="correctness-btn-1" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-1">
+                        ✗ שגיאה!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 - Total initialized inside loop -->
+        <div class="slide content-slide">
+            <h2>חישוב סכום מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+Console.WriteLine(total);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(2)" id="output-btn-2">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-2">
+                        <div class="io-content">
+                            2
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(2)" id="explanation-btn-2">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-2">
+                        
+המשתנה total מאותחל מחדש לאפס בכל איטרציה. כשמגדירים משתנה בתוך הלולאה הוא "נולד מחדש" בכל סיבוב ולא שומר את הערך הקודם.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(2)" id="correctness-btn-2" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-2">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">18</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 - Average with uninitialized total -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">int</span> result = total / <span class="code-number">4</span>;
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(3)" id="output-btn-3">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-3">
+                        <div class="io-content output-error">
+                            Error!
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(3)" id="explanation-btn-3">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-3">
+                        
+המשתנה total הוגדר אבל לא אותחל לערך התחלתי. הפעולה =+ מתבססת על כך שבמשתנה כבר יש ערך, אחרת הקומפיילר לא ידע איך "להוסיף" לו, ויתן לנו שגיאה.                     </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(3)" id="correctness-btn-3" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-3">
+                        ✗ שגיאה!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 - Average with int truncation -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">int</span> result = total / <span class="code-number">4</span>;
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(4)" id="output-btn-4">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-4">
+                        <div class="io-content">
+                            4
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(4)" id="explanation-btn-4">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-4">
+                        
+חלוקה של שני מספרים שלמים תמיד נותנת תוצאה שלמה. הקומפיילר "חותך" את החלק העשרוני.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(4)" id="correctness-btn-4" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-4">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">4.5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 - Average with double but no typecast -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">double</span> result = total / <span class="code-number">4</span>;
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(5)" id="output-btn-5">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-5">
+                        <div class="io-content">
+                            4.0
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(5)" id="explanation-btn-5">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-5">
+                        
+למרות שהתוצאה היא מטיפוס double, קודם מתבצעת חלוקה בין שני מספרים שלמים. רק אחר כך התוצאה מומרת
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(5)" id="correctness-btn-5" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-5">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">4.5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6 - Average with wrong typecast parentheses -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">double</span> result = (<span class="code-keyword">double</span>)(total / <span class="code-number">4</span>);
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(6)" id="output-btn-6">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-6">
+                        <div class="io-content">
+                            4.0
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(6)" id="explanation-btn-6">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-6">
+                        
+בגלל חוקי הקדימויות מתבצע קודם מה שבסוגריים - חלוקת שלמים, ורק אחר כך התוצאה מומרת ל-double.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(6)" id="correctness-btn-6" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-6">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">4.5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7 - Average with correct typecast -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">double</span> result = (<span class="code-keyword">double</span>)total / <span class="code-number">4</span>;
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(7)" id="output-btn-7">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-7">
+                        <div class="io-content">
+                            4.5
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(7)" id="explanation-btn-7">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-7">
+                        
+המרה נכונה! המרת total לפני החלוקה גורמת לחלוקה עשרונית.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(7)" id="correctness-btn-7" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-7">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 - Average with division by 4.0 -->
+        <div class="slide content-slide">
+            <h2>חישוב ממוצע מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> total = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">4</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    total += num;
+}
+<span class="code-keyword">double</span> result = total / <span class="code-number">4.0</span>;
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">5, 3, 8, 2</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(8)" id="output-btn-8">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-8">
+                        <div class="io-content">
+                            4.5
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(8)" id="explanation-btn-8">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-8">
+                        
+חלוקה במספר עשרוני הופכת את כל החישוב לעשרוני. אין צורך בהמרה מפורשת.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(8)" id="correctness-btn-8" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-8">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9 - Factorial with wrong initialization (0) -->
+        <div class="slide content-slide">
+            <h2>חישוב כפל מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> result = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">3</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    result *= num;
+}
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3, 2, 4</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(9)" id="output-btn-9">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-9">
+                        <div class="io-content">
+                            0
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(9)" id="explanation-btn-9">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-9">
+                        
+ערך התחלתי 0 מאפס את התוצאה. כל מכפלה ב-0 נותנת 0. מכפלה חייבת להתחיל מ-1.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(9)" id="correctness-btn-9" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-9">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">24</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10 - Factorial correct -->
+        <div class="slide content-slide">
+            <h2>חישוב כפל מספרים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> result = <span class="code-number">1</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">3</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">11</span>);
+    result *= num;
+}
+Console.WriteLine(result);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3, 2, 4</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(10)" id="output-btn-10">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-10">
+                        <div class="io-content">
+                            24
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(10)" id="explanation-btn-10">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-10">
+                        
+ערך התחלתי נכון! המכפלה מתחילה מ-1, וכל מספר מוכפל בתוצאה המצטברת.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(10)" id="correctness-btn-10" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-10">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11 - Maximum correct with positive range -->
+        <div class="slide content-slide">
+            <h2>מציאת מקסימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">10</span>, <span class="code-number">50</span>);
+    <span class="code-keyword">if</span> (num &gt; max)
+        max = num;
+}
+Console.WriteLine(max);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">23, 41, 15, 38, 29, 12, 45, 31</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(11)" id="output-btn-11">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-11">
+                        <div class="io-content">
+                            45
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(11)" id="explanation-btn-11">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-11">
+                        
+אתחול ל-0 עובד כשכל המספרים חיוביים. המספר הראשון גדול מ-0, אז max מתעדכן מיד.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(11)" id="correctness-btn-11" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-11">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12 - Minimum wrong with 0 initialization -->
+        <div class="slide content-slide">
+            <h2>מציאת מינימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> min = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">10</span>, <span class="code-number">50</span>);
+    <span class="code-keyword">if</span> (num &lt; min)
+        min = num;
+}
+Console.WriteLine(min);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">23, 41, 15, 38, 29, 12, 45, 31</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(12)" id="output-btn-12">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-12">
+                        <div class="io-content">
+                            0
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(12)" id="explanation-btn-12">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-12">
+                        
+אתחול ל-0 לא עובד למינימום! כל המספרים גדולים מ-0, אז min לעולם לא מתעדכן ונשאר 0.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(12)" id="correctness-btn-12" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-12">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13 - Minimum correct with range max initialization -->
+        <div class="slide content-slide">
+            <h2>מציאת מינימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> min = <span class="code-number">50</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">10</span>, <span class="code-number">50</span>);
+    <span class="code-keyword">if</span> (num &lt; min)
+        min = num;
+}
+Console.WriteLine(min);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">23, 41, 15, 38, 29, 12, 45, 31</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(13)" id="output-btn-13">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-13">
+                        <div class="io-content">
+                            12
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(13)" id="explanation-btn-13">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-13">
+                        
+אתחול לערך המקסימלי בטווח. אם אנחנו יודעים שכל המספרים קטנים מ-50, אפשר לאתחל ל-50
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(13)" id="correctness-btn-13" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-13">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14 - Maximum wrong with negative range and 0 -->
+        <div class="slide content-slide">
+            <h2>מציאת מקסימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> max = <span class="code-number">0</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">-30</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num &gt; max)
+        max = num;
+}
+Console.WriteLine(max);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">15, 8, -22, -3, 18, -25, 20, -11</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(14)" id="output-btn-14">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-14">
+                        <div class="io-content">
+                            0
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(14)" id="explanation-btn-14">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-14">            
+
+אתחול ל-0 לא עובד כשיש מספרים שליליים. מספרים שליליים קטנים מ-0, אז max נשאר 0.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(14)" id="correctness-btn-14" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-14">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15 - Maximum correct with int.MinValue -->
+        <div class="slide content-slide">
+            <h2>מציאת מקסימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> max = <span class="code-keyword">int</span>.MinValue;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">-30</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num &gt; max)
+        max = num;
+}
+Console.WriteLine(max);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">15, 8, -22, -3, 18, -25, 20, -11</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(15)" id="output-btn-15">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-15">
+                        <div class="io-content">
+                            20
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(15)" id="explanation-btn-15">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-15">
+                        
+אתחול ל-int.MinValue עובד תמיד בחיפוש מקסימום. זה המספר הכי קטן שאפשר, אז כל מספר אחר יהיה גדול יותר.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(15)" id="correctness-btn-15" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-15">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16 - Minimum wrong with int.MinValue -->
+        <div class="slide content-slide">
+            <h2>מציאת מינימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> min = <span class="code-keyword">int</span>.MinValue;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">-30</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num &lt; min)
+        min = num;
+}
+Console.WriteLine(min);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">15, 8, -22, -3, 18, -25, 20, -11</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(16)" id="output-btn-16">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-16">
+                        <div class="io-content">
+                            -2147483648
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(16)" id="explanation-btn-16">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-16">
+                        
+אתחול ל-int.MinValue לא עובד למינימום. כל המספרים גדולים מהערך הזה, אז min לעולם לא מתעדכן.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(16)" id="correctness-btn-16" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-16">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">25-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17 - Minimum correct with int.MaxValue -->
+        <div class="slide content-slide">
+            <h2>מציאת מינימום</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> min = <span class="code-keyword">int</span>.MaxValue;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">8</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">-30</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num &lt; min)
+        min = num;
+}
+Console.WriteLine(min);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">15, 8, -22, -3, 18, -25, 20, -11</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(17)" id="output-btn-17">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-17">
+                        <div class="io-content">
+                            -25
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(17)" id="explanation-btn-17">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-17">
+                        
+אתחול ל-int.MaxValue עובד תמיד בחיפוש מינימום. זה המספר הכי גדול שאפשר, אז כל מספר אחר יהיה קטן יותר.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+                    <button class="correctness-btn" onclick="revealCorrectness(17)" id="correctness-btn-17" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-17">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18 - Check Any WRONG (if-else resets) -->
+        <div class="slide content-slide">
+            <h2>האם קיים בקלט מספר זוגי?</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">bool</span> found = <span class="code-keyword">false</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">6</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num % <span class="code-number">2</span> == <span class="code-number">0</span>)
+        found = <span class="code-keyword">true</span>;
+    <span class="code-keyword">else</span>
+        found = <span class="code-keyword">false</span>;
+}
+Console.WriteLine(found);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">8, 12, 6, 14, 10, 7</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(18)" id="output-btn-18">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-18">
+                        <div class="io-content">
+                            False
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(18)" id="explanation-btn-18">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-18">
+                        
+ה-else מאפס את התוצאה בכל מספר שאינו זוגי. אם המספר האחרון אי-זוגי, התשובה false למרות שהיה מספר זוגי קודם.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(18)" id="correctness-btn-18" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-18">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">True</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19 - Check Any CORRECT -->
+        <div class="slide content-slide">
+            <h2>האם קיים בקלט מספר זוגי?</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">bool</span> found = <span class="code-keyword">false</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">6</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num % <span class="code-number">2</span> == <span class="code-number">0</span>)
+        found = <span class="code-keyword">true</span>;
+}
+Console.WriteLine(found);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">8, 12, 6, 14, 10, 7</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(19)" id="output-btn-19">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-19">
+                        <div class="io-content">
+                            True
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(19)" id="explanation-btn-19">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-19">
+                        
+אין else שמאפס. ברגע שמצאנו פעם אחת מספר זוגי, found נשארtrue.  זו הדרך הנכונה לבדוק "האם קיים".
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(19)" id="correctness-btn-19" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-19">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20 - Check All WRONG (if-else resets) -->
+        <div class="slide content-slide">
+            <h2>האם כל המספרים בקלט זוגיים?</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">bool</span> allEven = <span class="code-keyword">true</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">6</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num % <span class="code-number">2</span> == <span class="code-number">0</span>)
+        allEven = <span class="code-keyword">true</span>;
+    <span class="code-keyword">else</span>
+        allEven = <span class="code-keyword">false</span>;
+}
+Console.WriteLine(allEven);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">7, 12, 6, 14, 10, 8</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(20)" id="output-btn-20">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-20">
+                        <div class="io-content">
+                            True
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(20)" id="explanation-btn-20">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-20">
+                        
+ה-else הורס את הבדיקה. אם המספר האחרון זוגי, התשובה true גם אם היו מספרים אי-זוגיים קודם.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(20)" id="correctness-btn-20" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-20">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">False</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21 - Check All WRONG (false initialization) -->
+        <div class="slide content-slide">
+            <h2>האם כל המספרים בקלט זוגיים?</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">bool</span> allEven = <span class="code-keyword">false</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">6</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num % <span class="code-number">2</span> != <span class="code-number">0</span>)
+        allEven = <span class="code-keyword">false</span>;
+}
+Console.WriteLine(allEven);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">12, 6, 14, 10, 8, 16</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(21)" id="output-btn-21">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-21">
+                        <div class="io-content">
+                            False
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(21)" id="explanation-btn-21">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-21">
+                        
+ערך התחלתי שגוי. התנאי "כל המספרים זוגיים" צריך להתחיל מ- true,  ולהפוך ל- false כאשר מוצאים מספר אי-זוגי.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(21)" id="correctness-btn-21" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-21">
+                        ✗ לא נכון
+                        <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                            הפלט הנכון: <span style="font-family: 'Courier New', monospace;">True</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22 - Check All CORRECT -->
+        <div class="slide content-slide">
+            <h2>האם כל המספרים בקלט זוגיים?</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">bool</span> allEven = <span class="code-keyword">true</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; <span class="code-number">6</span>; i++)
+{
+    <span class="code-keyword">int</span> num = rnd.Next(<span class="code-number">1</span>, <span class="code-number">20</span>);
+    <span class="code-keyword">if</span> (num % <span class="code-number">2</span> != <span class="code-number">0</span>)
+        allEven = <span class="code-keyword">false</span>;
+}
+Console.WriteLine(allEven);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">12, 6, 14, 10, 8, 16</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(22)" id="output-btn-22">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-22">
+                        <div class="io-content">
+                            True
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(22)" id="explanation-btn-22">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-22">
+                        
+הגיון נכון. מתחילים עם הנחה שכולם זוגיים, ומשנים ל-false ברגע שמוצאים מספר אי-זוגי.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(22)" id="correctness-btn-22" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-22">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23 - Nested loops with WriteLine after inner loop (many lines) -->
+        <div class="slide content-slide">
+            <h2>ציור אלכסון של כוכבים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> size = <span class="code-number">3</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++)
+{
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; size; j++)
+    {
+        <span class="code-keyword">if</span> (i == j)
+            Console.WriteLine(<span class="code-string">"*"</span>);
+        <span class="code-keyword">else</span>
+            Console.WriteLine(<span class="code-string">"-"</span>);
+    }
+}
+Console.WriteLine(<span class="code-string">"Here is your diagonal of stars."</span>);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(23)" id="output-btn-23">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-23">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">*
+-
+-
+-
+*
+-
+-
+-
+*
+Here is your diagonal of stars.</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(23)" id="explanation-btn-23">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-23">
+                        
+WriteLine אחרי הלולאה הפנימית יוצר שורות רבות. כל איטרציה מסתיימת בשורה חדשה, במקום לבנות שורה אחת.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(23)" id="correctness-btn-23" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-23">
+                        ✗ לא נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24 - Nested loops with Write (no ln) - one long line -->
+        <div class="slide content-slide">
+            <h2>ציור אלכסון של כוכבים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> size = <span class="code-number">3</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++)
+{
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; size; j++)
+    {
+        <span class="code-keyword">if</span> (i == j)
+            Console.Write(<span class="code-string">"*"</span>);
+        <span class="code-keyword">else</span>
+            Console.Write(<span class="code-string">"-"</span>);
+    }
+}
+Console.WriteLine(<span class="code-string">"Here is your diagonal of stars."</span>);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(24)" id="output-btn-24">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-24">
+                        <div class="io-content" style="direction: ltr; text-align: left;">*--*--*--Here is your diagonal of stars.</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(24)" id="explanation-btn-24">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-24">
+                        
+Write בלי ln יוצר שורה אחת ארוכה. כל הכוכבים והמקפים מודפסים ברצף על אותה שורה.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(24)" id="correctness-btn-24" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-24">
+                        ✗ לא נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25 - WriteLine after outer loop (before message) -->
+        <div class="slide content-slide">
+            <h2>ציור אלכסון של כוכבים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> size = <span class="code-number">3</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++)
+{
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; size; j++)
+    {
+        <span class="code-keyword">if</span> (i == j)
+            Console.Write(<span class="code-string">"*"</span>);
+        <span class="code-keyword">else</span>
+            Console.Write(<span class="code-string">"-"</span>);
+    }
+}
+Console.WriteLine();
+Console.WriteLine(<span class="code-string">"Here is your diagonal of stars."</span>);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(25)" id="output-btn-25">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-25">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">*--*--*--
+Here is your diagonal of stars.</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(25)" id="explanation-btn-25">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-25">
+                        
+WriteLine אחרי הלולאה החיצונית מדפיס הכל בשורה אחת. השורה החדשה מגיעה רק בסוף.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(25)" id="correctness-btn-25" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result wrong" id="correctness-25">
+                        ✗ לא נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26 - CORRECT: WriteLine after inner loop -->
+        <div class="slide content-slide">
+            <h2>ציור אלכסון של כוכבים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> size = <span class="code-number">3</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">0</span>; i &lt; size; i++)
+{
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> j = <span class="code-number">0</span>; j &lt; size; j++)
+    {
+        <span class="code-keyword">if</span> (i == j)
+            Console.Write(<span class="code-string">"*"</span>);
+        <span class="code-keyword">else</span>
+            Console.Write(<span class="code-string">"-"</span>);
+    }
+    Console.WriteLine();
+}
+Console.WriteLine(<span class="code-string">"Here is your diagonal of stars."</span>);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">3</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(26)" id="output-btn-26">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-26">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">*--
+-*-
+--*
+Here is your diagonal of stars.</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(26)" id="explanation-btn-26">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-26">
+                        
+ה- WriteLine  נמצא במקום הנכון - לאחר שיוצאים מהלולאה הפנימית. אחרי כל שורה של האלכסון יורדים שורה, וממשיכים לשורה הבאה.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(26)" id="correctness-btn-26" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-26">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27 - Manual code without loop -->
+        <div class="slide content-slide">
+            <h2>הדפסת מספרים מ-1 עד 5</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display">Console.WriteLine(<span class="code-number">1</span>);
+Console.WriteLine(<span class="code-number">2</span>);
+Console.WriteLine(<span class="code-number">3</span>);
+Console.WriteLine(<span class="code-number">4</span>);
+Console.WriteLine(<span class="code-number">5</span>);</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">-</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(27)" id="output-btn-27">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-27">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">1
+2
+3
+4
+5</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(27)" id="explanation-btn-27">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-27">
+                        
+הקוד עובד, אבל מה אם היינו צריכים 1000 פעמים? כתיבה ידנית זה לא מעשי. לכן המציאו לולאות.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(27)" id="correctness-btn-27" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-27" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
+                        ✓ נכון, אבל בעייתי - מה יקרה אם נרצה 1000?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28 - While loop when for is better -->
+        <div class="slide content-slide">
+            <h2>הדפסת כוכבים 5 פעמים</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> count = <span class="code-number">0</span>;
+<span class="code-keyword">while</span> (count &lt; <span class="code-number">5</span>)
+{
+    Console.WriteLine(<span class="code-string">"***"</span>);
+    count++;
+}</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">-</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(28)" id="output-btn-28">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-28">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">***
+***
+***
+***
+***</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(28)" id="explanation-btn-28">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-28">
+                        
+while עובד, אבל for יותר מתאים. כשיודעים בדיוק כמה פעמים לחזור, for יותר ברור וקומפקטי.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(28)" id="correctness-btn-28" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-28" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
+                        ✓ נכון, אבל במקרה זה, יותר נוח for
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 29 - Extra counter variable (not best practice) -->
+        <div class="slide content-slide">
+            <h2>הדפסת מספרים מ-1 עד 5</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">int</span> number = <span class="code-number">1</span>;
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++)
+{
+    Console.WriteLine(number);
+    number += <span class="code-number">1</span>;
+}</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">-</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(29)" id="output-btn-29">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-29">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">1
+2
+3
+4
+5</div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(29)" id="explanation-btn-29">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-29">
+                        
+המשתנה counter מיותר. יש לנו את i שסופר בדיוק את מה שאנחנו צריכים. אפשר להשתמש ישירות בו.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(29)" id="correctness-btn-29" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-29" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
+                        ✓ נכון, אבל לא הכרחי - נשתמש ב- i
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 30 - Using i directly (best practice) -->
+        <div class="slide content-slide">
+            <h2>הדפסת מספרים מ-1 עד 5</h2>
+
+            <div class="unified-grid">
+                <div class="code-section">
+                    <div class="code-display"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++)
+{
+    Console.WriteLine(i);
+}</div>
+                </div>
+
+                <div class="io-explanation-row">
+                <div class="input-section">
+                    <h3>קלט (Input):</h3>
+                    <div class="io-content">-</div>
+                </div>
+
+                <div class="output-section">
+                    <h3>פלט (Output):</h3>
+                    <button class="reveal-btn" onclick="revealOutput(30)" id="output-btn-30">
+                        מה הפלט? 🤔
+                    </button>
+                    <div class="revealed-content" id="output-30">
+                        <div class="io-content" style="white-space: pre; text-align: left; direction: ltr;">1
+2
+3
+4
+5</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <button class="explanation-btn" onclick="revealExplanation(30)" id="explanation-btn-30">
+                        💡 הסבר
+                    </button>
+                    <div class="explanation-content" id="explanation-30">
+                        
+שימוש ישיר ב-i - נכון וקריא. מונה הלולאה נוצר בדיוק בשביל זה - לספור את מספר האיטרציות.
+                    </div>
+                </div>
+                </div>
+
+                <div class="correctness-container">
+
+                    <button class="correctness-btn" onclick="revealCorrectness(30)" id="correctness-btn-30" disabled>
+                        נכון / לא נכון? ✓ ✗
+                    </button>
+                    <div class="correctness-result correct" id="correctness-30">
+                        ✓ נכון
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Slide 31 - Should return but prints (void signature) -->
+<div class="slide content-slide">
+    <h2>פעולה שמחזירה ערך</h2>
+
+    <div class="unified-grid">
+        <div class="code-section">
+            <div class="code-display"><span class="code-keyword">static</span> <span class="code-keyword">void</span> CalculateFactorial(<span class="code-keyword">int</span> number)
+{
+    <span class="code-keyword">int</span> factorial = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= number; i++)
+    {
+        factorial *= i;
+    }
+    Console.WriteLine(factorial);
+}</div>
+        </div>
+
+        <div class="io-explanation-row">
+        <div class="input-section">
+            <h3>קלט (Input):</h3>
+            <div class="io-content">5</div>
+        </div>
+
+        <div class="output-section">
+            <h3>פלט (Output):</h3>
+            <button class="reveal-btn" onclick="revealOutput(31)" id="output-btn-31">
+                מה הפלט? 🤔
+            </button>
+            <div class="revealed-content" id="output-31">
+                <div class="io-content">
+                    120
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <button class="explanation-btn" onclick="revealExplanation(31)" id="explanation-btn-31">
+                💡 הסבר
+            </button>
+            <div class="explanation-content" id="explanation-31">
+                
+הפעולה אמורה להחזיר ערך אבל לא עושה זאת, אז המשימה לא בוצעה כמו שצריך.
+            </div>
+        </div>
+        </div>
+
+        <div class="correctness-container">
+
+            <button class="correctness-btn" onclick="revealCorrectness(31)" id="correctness-btn-31" disabled>
+                נכון / לא נכון? ✓ ✗
+            </button>
+            <div class="correctness-result wrong" id="correctness-31">
+                ✗ לא נכון
+                    <div style="margin-top: 12px; font-size: 1.3rem; border-top: 2px solid rgba(220, 38, 38, 0.3); padding-top: 12px;">
+                         הפעולה אמורה להחזיר את הערך <span style="font-family: 'Courier New', monospace;"> </span>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 32 - Returns but signature is void (error) -->
+<div class="slide content-slide">
+    <h2>פעולה שמחזירה ערך</h2>
+
+    <div class="unified-grid">
+        <div class="code-section">
+            <div class="code-display"><span class="code-keyword">static</span> <span class="code-keyword">void</span> CalculateFactorial(<span class="code-keyword">int</span> n)
+{
+    <span class="code-keyword">int</span> factorial = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= n; i++)
+    {
+        factorial *= i;
+    }
+    <span class="code-keyword">return</span> factorial;
+}</div>
+        </div>
+
+        <div class="io-explanation-row">
+        <div class="input-section">
+            <h3>קלט (Input):</h3>
+            <div class="io-content">5</div>
+        </div>
+
+        <div class="output-section">
+            <h3>פלט (Output):</h3>
+            <button class="reveal-btn" onclick="revealOutput(32)" id="output-btn-32">
+                מה הפלט? 🤔
+            </button>
+            <div class="revealed-content" id="output-32">
+                <div class="io-content output-error">
+                    Error!
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <button class="explanation-btn" onclick="revealExplanation(32)" id="explanation-btn-32">
+                💡 הסבר
+            </button>
+            <div class="explanation-content" id="explanation-32">
+                
+אי אפשר להחזיר ערך מפעולה שמוגדרת void.  החתימה מגדירה void, ובכל זאת יש return  , זו שגיאת קומפילציה.
+            </div>
+        </div>
+        </div>
+
+        <div class="correctness-container">
+
+            <button class="correctness-btn" onclick="revealCorrectness(32)" id="correctness-btn-32" disabled>
+                נכון / לא נכון? ✓ ✗
+            </button>
+            <div class="correctness-result wrong" id="correctness-32">
+                ✗ שגיאה!
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 33 - Correct: returns with int signature -->
+<div class="slide content-slide">
+    <h2>פעולה שמחזירה ערך</h2>
+
+    <div class="unified-grid">
+        <div class="code-section">
+            <div class="code-display"><span class="code-keyword">static</span> <span class="code-keyword">int</span> CalculateFactorial(<span class="code-keyword">int</span> number)
+{
+    <span class="code-keyword">int</span> factorial = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= number; i++)
+    {
+        factorial *= i;
+    }
+    <span class="code-keyword">return</span> factorial;
+}</div>
+        </div>
+
+        <div class="io-explanation-row">
+        <div class="input-section">
+            <h3>קלט (Input):</h3>
+            <div class="io-content">5</div>
+        </div>
+
+        <div class="output-section">
+            <h3>פלט (Output):</h3>
+            <button class="reveal-btn" onclick="revealOutput(33)" id="output-btn-33">
+                מה הפלט? 🤔
+            </button>
+            <div class="revealed-content" id="output-33">
+                <div class="io-content">
+                    120
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <button class="explanation-btn" onclick="revealExplanation(33)" id="explanation-btn-33">
+                💡 הסבר
+            </button>
+            <div class="explanation-content" id="explanation-33">
+                
+החתימה והמימוש תואמים. הפעולה מוגדרת שמחזירה int והיא אכן מבצעת return ל-int, זו הדרך הנכונה.
+            </div>
+        </div>
+        </div>
+
+        <div class="correctness-container">
+
+            <button class="correctness-btn" onclick="revealCorrectness(33)" id="correctness-btn-33" disabled>
+                נכון / לא נכון? ✓ ✗
+            </button>
+            <div class="correctness-result correct" id="correctness-33">
+                ✓ נכון
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 34 - Should print but has int signature (error) -->
+<div class="slide content-slide">
+    <h2>פעולה שלא מחזירה ערך</h2>
+
+    <div class="unified-grid">
+        <div class="code-section">
+            <div class="code-display"><span class="code-keyword">static</span> <span class="code-keyword">int</span> CalculateFactorial(<span class="code-keyword">int</span> number)
+{
+    <span class="code-keyword">int</span> factorial = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= number; i++)
+    {
+        factorial *= i;
+    }
+    Console.WriteLine(factorial);
+}</div>
+        </div>
+
+        <div class="io-explanation-row">
+        <div class="input-section">
+            <h3>קלט (Input):</h3>
+            <div class="io-content">5</div>
+        </div>
+
+        <div class="output-section">
+            <h3>פלט (Output):</h3>
+            <button class="reveal-btn" onclick="revealOutput(34)" id="output-btn-34">
+                מה הפלט? 🤔
+            </button>
+            <div class="revealed-content" id="output-34">
+                <div class="io-content output-error">
+                    Error!
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <button class="explanation-btn" onclick="revealExplanation(34)" id="explanation-btn-34">
+                💡 הסבר
+            </button>
+            <div class="explanation-content" id="explanation-34">
+                
+הפעולה מוגדרת כ-int, ולכן חייבת להחזיר ערך. היא רק מדפיסה, אבל אין return. זו שגיאת קומפילציה.
+            </div>
+        </div>
+        </div>
+
+        <div class="correctness-container">
+
+            <button class="correctness-btn" onclick="revealCorrectness(34)" id="correctness-btn-34" disabled>
+                נכון / לא נכון? ✓ ✗
+            </button>
+            <div class="correctness-result wrong" id="correctness-34">
+                ✗ שגיאה!
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 35 - Correct: prints with void signature -->
+<div class="slide content-slide">
+    <h2>פעולה שלא מחזירה ערך</h2>
+
+    <div class="unified-grid">
+        <div class="code-section">
+            <div class="code-display"><span class="code-keyword">static</span> <span class="code-keyword">void</span> CalculateFactorial(<span class="code-keyword">int</span> number)
+{
+    <span class="code-keyword">int</span> factorial = <span class="code-number">1</span>;
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= number; i++)
+    {
+        factorial *= i;
+    }
+    Console.WriteLine(factorial);
+}</div>
+        </div>
+
+        <div class="io-explanation-row">
+        <div class="input-section">
+            <h3>קלט (Input):</h3>
+            <div class="io-content">5</div>
+        </div>
+
+        <div class="output-section">
+            <h3>פלט (Output):</h3>
+            <button class="reveal-btn" onclick="revealOutput(35)" id="output-btn-35">
+                מה הפלט? 🤔
+            </button>
+            <div class="revealed-content" id="output-35">
+                <div class="io-content">
+                    120
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <button class="explanation-btn" onclick="revealExplanation(35)" id="explanation-btn-35">
+                💡 הסבר
+            </button>
+            <div class="explanation-content" id="explanation-35">
+                
+זה נכון. הפעולה מוגדרת כ- void, ואכן לא מבצעת return.  
+            </div>
+        </div>
+        </div>
+
+        <div class="correctness-container">
+
+            <button class="correctness-btn" onclick="revealCorrectness(35)" id="correctness-btn-35" disabled>
+                נכון / לא נכון? ✓ ✗
+            </button>
+            <div class="correctness-result correct" id="correctness-35">
+                ✓ נכון
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="prevSlide()" id="prev-btn" disabled>הקודם →</button>
+        <button class="nav-btn" onclick="nextSlide()" id="next-btn">← הבא</button>
+    </div>
+
+    <div class="slide-number">
+        <span id="total-slides">1</span> / <span id="current-slide">1</span>
+    </div>
+
+    <div class="copyright">© חגית ידוב 2025</div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // Update total content slides (excluding title slide)
+        document.getElementById('total-slides').textContent = totalSlides - 1;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+
+            const contentSlideNumber = currentSlide === 0 ? 0 : currentSlide;
+            if (currentSlide > 0) {
+                document.getElementById('current-slide').textContent = contentSlideNumber;
+            }
+
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+
+            const isTitle = slides[currentSlide].classList.contains('title-slide');
+            document.querySelector('.slide-number').style.display = isTitle ? 'none' : 'block';
+            document.querySelector('.copyright').style.display = isTitle ? 'none' : 'block';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function revealOutput(num) {
+            document.getElementById('output-' + num).classList.add('show');
+            document.getElementById('output-btn-' + num).style.display = 'none';
+            document.getElementById('correctness-btn-' + num).disabled = false;
+
+            // Show explanation button
+            const explanationBtn = document.getElementById('explanation-btn-' + num);
+            if (explanationBtn) {
+                explanationBtn.classList.add('show');
+            }
+        }
+
+        function revealExplanation(num) {
+            document.getElementById('explanation-' + num).classList.add('show');
+            document.getElementById('explanation-btn-' + num).style.display = 'none';
+        }
+
+        function revealCorrectness(num) {
+            document.getElementById('correctness-' + num).classList.add('show');
+            document.getElementById('correctness-btn-' + num).style.display = 'none';
+
+            // Show explanation button
+            /*const explanationBtn = document.getElementById('explanation-btn-' + num);
+            if (explanationBtn) {
+                explanationBtn.classList.add('show');
+            }*/
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') {
+                prevSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === ' ') {
+                nextSlide();
+            }
+        });
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', function() {
+            const isTitle = slides[currentSlide].classList.contains('title-slide');
+            document.querySelector('.slide-number').style.display = isTitle ? 'none' : 'block';
+            document.querySelector('.copyright').style.display = isTitle ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
